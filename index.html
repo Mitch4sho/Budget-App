@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
+    <title>Budget App</title>
+  </head>
+  <body>
+    <div class="top">
+      <section class = 'budget'>
+      <div class = 'budget_title'> 
+       <h1>Available Budget in <span class= 'budgetTitleMonth'></span></h1>
+      </div>
+      <h2 class = 'budgetValue'>-0.00</h2>
+      <section class="budgetBoxes">
+        <section id="incomeBox">
+          <div class="budgeIncomeText">Income</div>
+          <div class="right">
+          <div class="budgetIncomeValue"> + 0.00</div>
+          <div class="budgetIncomePercentage"></div>
+          </div>
+        </section>
+        <Section  id="expenseBox">
+          <div class="budgeExpenseText">Expense</div>
+          <div class="right">
+          <div class="budgetExpensesValue"> + 0.00</div>
+          <div class="budgetExpensesPercentage"></div>
+        </Section >
+      </section>
+    </section>
+    </div>
+    <div class="bottom">
+    <section class="inputSection">
+      <div class="add">
+        <div class="addContainer">
+          <select class ='addType'>
+            <option value="inc">+</option>
+            <option value="exp">-</option>
+          </select>
+       <input  type = 'text' placeholder="Add description" id = 'description'></input>
+       <input type="number" class = 'value' placeholder="Value">
+       <button class = 'addBtn'></button>
+      </div>
+     </div>
+    </section>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
