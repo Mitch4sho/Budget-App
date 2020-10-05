@@ -53,8 +53,6 @@ var budgetController = (function () {
         testing: function () {
             console.log(data);
         }
-
-
     };
 })();
 
@@ -66,6 +64,8 @@ var UIController = (function () {
         inputDescriptions: '.description',
         inputValue: '.value',
         inputBtn: '.addBtn',
+        incomeContainer: '.incomeList',
+        expenseContainer: '.expensesList'
     }
 
     return {
@@ -77,6 +77,28 @@ var UIController = (function () {
                 value: document.querySelector(DOMstrings.inputValue).value
             };
         },
+
+        addListItem: function (obj, type) {
+            var html, newHtml, element;
+
+            // create html string with placeholder 
+            if (type === 'inc') {
+                element = DOMstrings.incomeContainer;
+                html = '<div class="item" id="income-%id%"><div class="incomeContainer"><div class="itemDescription">%description%</div><div class="itemValue">%value%</div><div class="itemDelete"><button class="itemDeleteBtn"><i class="fas fa-trash-alt"></i></button></div></div></div>';
+            } else if (type === 'exp') {
+                element = DOMstrings.expenseContainer;
+                html = '<div class="item" id="expense-%id%"><div class="expenseContainer"><div class="itemDescription">%description%</div><div class="itemValue">%value%</div><div class="itemPercentage">21%</div><div class="itemDelete"><button class="itemDeleteBtn"><i class="fas fa-trash-alt"></i></button></div></div> </div>';
+            }
+            //replace the placeholder text with acutal data
+            newHtml = html.replace('%id%', obj.id);
+            newHtml = newHtml.replace('%description%', obj.description);
+            newHtml = newHtml.replace('%value%', obj.value);
+
+            //insert the html into DOM
+            document.querySelector(element).insertAdjacentHTML('beforeend', newHtml);
+        },
+
+
         //this DOMstrings is now public 
         getDOMstrings: function () {
             return DOMstrings;
@@ -113,6 +135,8 @@ var controller = (function (budgetCtrl, UICtrl) {
         newItem = budgetCtrl.addItem(input.type, input.description, input.value);
 
         // 3.add the item to the UI
+        UICtrl.addListItem(newItem, input.type)
+
 
         // 4. Calculate the budget 
 

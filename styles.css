@@ -147,11 +147,11 @@ body {
 }
 
 .income {
-  width: 475px;
+  width: 300px;
   margin-right: 50px;
 }
 .expenses {
-  width: 475px;
+  width: 300px;
   margin-right: 50px;
 }
 .incomeTitle {
@@ -167,4 +167,19 @@ body {
   font-weight: 400;
   font-size: 18px;
   margin-bottom: 15px;
+}
+.item {
+  padding: 13px;
+}
+.item:first-child {
+  border-top: 1px solid #e7e7e7;
+}
+.incomeContainer,
+.expenseContainer {
+  display: flex;
+}
+
+.itemDeleteBtn {
+  color: #ff5049;
+  display: none;
 }
