@@ -84,10 +84,10 @@ var UIController = (function () {
             // create html string with placeholder 
             if (type === 'inc') {
                 element = DOMstrings.incomeContainer;
-                html = '<div class="item" id="income-%id%"><div class="incomeContainer"><div class="itemDescription">%description%</div><div class="itemValue">%value%</div><div class="itemDelete"><button class="itemDeleteBtn"><i class="fas fa-trash-alt"></i></button></div></div></div>';
+                html = '<div class="item" id="income-%id%"><div class="itemDescription">%description%</div><div class="itemValue">+ %value%</div><div class="itemDelete"><button class="itemDeleteBtn"><i class="fas fa-trash-alt"></i></button></div></div>';
             } else if (type === 'exp') {
                 element = DOMstrings.expenseContainer;
-                html = '<div class="item" id="expense-%id%"><div class="expenseContainer"><div class="itemDescription">%description%</div><div class="itemValue">%value%</div><div class="itemPercentage">21%</div><div class="itemDelete"><button class="itemDeleteBtn"><i class="fas fa-trash-alt"></i></button></div></div> </div>';
+                html = '<div class="item" id="expense-%id%"><div class="itemDescription">%description%</div><div class="itemValue">- %value%</div><div class="itemPercentage">21%</div><div class="itemDelete"><button class="itemDeleteBtn"><i class="fas fa-trash-alt"></i></button></div></div>';
             }
             //replace the placeholder text with acutal data
             newHtml = html.replace('%id%', obj.id);

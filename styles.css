@@ -170,16 +170,60 @@ body {
 }
 .item {
   padding: 13px;
+  border-bottom: 1px solid #e7e7e7;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
 }
 .item:first-child {
   border-top: 1px solid #e7e7e7;
 }
-.incomeContainer,
-.expenseContainer {
-  display: flex;
+.itemDescription {
+  flex-grow: 3;
 }
-
+.itemValue {
+  transition: transform 0.4s;
+}
+.income .itemValue {
+  color: #28b9b5;
+}
+.expenses .itemValue,
+.expenses .itemPercentage {
+  color: #ff5049;
+}
 .itemDeleteBtn {
   color: #ff5049;
+  font-size: 15px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: inline-block;
+  vertical-align: middle;
+  line-height: 1;
   display: none;
+}
+.itemPercentage {
+  margin-left: 20px;
+  transition: transform 0.4s;
+  font-size: 11px;
+  padding: 3px;
+  background-color: #ffdad9;
+  border-radius: 3px;
+  width: 20px;
+}
+.itemDeleteBtn:focus {
+  outline: none;
+}
+.itemDeleteBtn:active {
+  transform: translateY(2px);
+}
+.item:hover .itemDeleteBtn {
+  display: block;
+}
+.item:hover .itemValue {
+  transform: translateX(-20px);
+}
+.item:hover .itemPercentage {
+  transform: translateX(-20px);
 }
