@@ -57,6 +57,20 @@ var budgetController = (function () {
             return newItem;
         },
 
+        deleteItem: function (type, id) {
+            var ids, index;
+
+            ids = data.allItems[type].map(function (current) {
+                return current.id;
+            });
+
+            index = ids.indexOf(id);
+
+            if (index !== -1) {
+                data.allItems[type].splice(index, 1);
+            }
+        },
+
         calculateBudget: function () {
             // calculate total income and expense
             calculateTotal('exp');
@@ -123,10 +137,10 @@ var UIController = (function () {
             // create html string with placeholder 
             if (type === 'inc') {
                 element = DOMstrings.incomeContainer;
-                html = '<div class="item" id="income-%id%"><div class="itemDescription">%description%</div><div class="itemValue">+ %value%</div><div class="itemDelete"><button class="itemDeleteBtn"><i class="fas fa-trash-alt"></i></button></div></div>';
+                html = '<div class="item" id="inc-%id%"><div class="itemDescription">%description%</div><div class="itemValue">+ %value%</div><div class="itemDelete"><button class="itemDeleteBtn"><i class="fas fa-trash-alt"></i></button></div></div>';
             } else if (type === 'exp') {
                 element = DOMstrings.expenseContainer;
-                html = '<div class="item" id="expense-%id%"><div class="itemDescription">%description%</div><div class="itemValue">- %value%</div><div class="itemPercentage">21%</div><div class="itemDelete"><button class="itemDeleteBtn"><i class="fas fa-trash-alt"></i></button></div></div>';
+                html = '<div class="item" id="exp-%id%"><div class="itemDescription">%description%</div><div class="itemValue">- %value%</div><div class="itemPercentage">21%</div><div class="itemDelete"><button class="itemDeleteBtn"><i class="fas fa-trash-alt"></i></button></div></div>';
             }
             //replace the placeholder text with acutal data
             newHtml = html.replace('%id%', obj.id);
@@ -137,19 +151,21 @@ var UIController = (function () {
             document.querySelector(element).insertAdjacentHTML('beforeend', newHtml);
         },
 
-        clearFields: function () {
-            var fields, fieldsArr;
+        deleteListItem:
 
-            fields = document.querySelectorAll(DOMstrings.inputDescriptions + ', ' + DOMstrings.inputValue);
+            clearFields: function () {
+                var fields, fieldsArr;
 
-            fieldsArr = Array.prototype.slice.call(fields);
+                fields = document.querySelectorAll(DOMstrings.inputDescriptions + ', ' + DOMstrings.inputValue);
 
-            fieldsArr.forEach(function (current, index, array) {
-                current.value = "";
-            });
+                fieldsArr = Array.prototype.slice.call(fields);
 
-            fieldsArr[0].focus();
-        },
+                fieldsArr.forEach(function (current, index, array) {
+                    current.value = "";
+                });
+
+                fieldsArr[0].focus();
+            },
         displayBudget: function (obj) {
             document.querySelector(DOMstrings.budgetValue).textContent = obj.budget;
             document.querySelector(DOMstrings.incomeValue).textContent = obj.totalInc;
@@ -233,15 +249,15 @@ var controller = (function (budgetCtrl, UICtrl) {
             //inc-1 
             splitID = itemID.split('-');
             type = splitID[0];
-            ID = splitID[1];
+            ID = parseInt(splitID[1]);
 
             // 1. delete the item from the data structure 
+            budgetCtrl.deleteItem(type, ID);
 
             //2. Delete the item form the UI 
 
             //3. update and show the new budget 
         }
-        console.log(itemID);
     };
     return {
         init: function () {
