@@ -151,21 +151,24 @@ var UIController = (function () {
             document.querySelector(element).insertAdjacentHTML('beforeend', newHtml);
         },
 
-        deleteListItem:
+        deleteListItem: function (selectorID) {
+            var el = document.getElementById(selectorID);
+            el.parentNode.removeChild(el);
+        },
 
-            clearFields: function () {
-                var fields, fieldsArr;
+        clearFields: function () {
+            var fields, fieldsArr;
 
-                fields = document.querySelectorAll(DOMstrings.inputDescriptions + ', ' + DOMstrings.inputValue);
+            fields = document.querySelectorAll(DOMstrings.inputDescriptions + ', ' + DOMstrings.inputValue);
 
-                fieldsArr = Array.prototype.slice.call(fields);
+            fieldsArr = Array.prototype.slice.call(fields);
 
-                fieldsArr.forEach(function (current, index, array) {
-                    current.value = "";
-                });
+            fieldsArr.forEach(function (current, index, array) {
+                current.value = "";
+            });
 
-                fieldsArr[0].focus();
-            },
+            fieldsArr[0].focus();
+        },
         displayBudget: function (obj) {
             document.querySelector(DOMstrings.budgetValue).textContent = obj.budget;
             document.querySelector(DOMstrings.incomeValue).textContent = obj.totalInc;
@@ -176,6 +179,7 @@ var UIController = (function () {
                 document.querySelector(DOMstrings.expensePercentage).textContent = '---'
             }
         },
+
 
         //this DOMstrings is now public 
         getDOMstrings: function () {
@@ -214,7 +218,6 @@ var controller = (function (budgetCtrl, UICtrl) {
 
         // 6. Display the budget on the UI
         UICtrl.displayBudget(budget);
-        console.log(budget);
     }
 
 
@@ -255,8 +258,10 @@ var controller = (function (budgetCtrl, UICtrl) {
             budgetCtrl.deleteItem(type, ID);
 
             //2. Delete the item form the UI 
+            UICtrl.deleteListItem(itemID);
 
             //3. update and show the new budget 
+            updateBudget();
         }
     };
     return {
