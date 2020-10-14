@@ -5,6 +5,19 @@ var budgetController = (function () {
         this.id = id;
         this.description = description;
         this.value = value;
+        this.percentage = -1;
+    };
+
+    Expense.prototype.calPercentage = function (totalIncome) {
+        if (totalIncome > 0) {
+            this.percentage = Math.round((this.value / totalIncome) * 100);
+        } else {
+            this.percentage = -1;
+        }
+    };
+
+    Expense.prototype.getPercentage = function () {
+        return this.percentage;
     };
 
     var Income = function (id, description, value) {
@@ -86,6 +99,20 @@ var budgetController = (function () {
                 data.percentage = -1;
             }
         },
+
+        calculatePercentages: function () {
+            data.allItems.exp.forEach(function (cur) {
+                cur.calPercentage;
+            });
+        },
+
+        getPercentages: function () {
+            var allPercentages = data.allItems.exp.map(function (cur) {
+                return cur.getPercentage();
+            });
+            return allPercentages
+        },
+
         getBudget: function () {
             return {
                 budget: data.budget,
@@ -218,7 +245,19 @@ var controller = (function (budgetCtrl, UICtrl) {
 
         // 6. Display the budget on the UI
         UICtrl.displayBudget(budget);
-    }
+    };
+
+    var updatePercentages = function () {
+        //Cal Percentages
+        budgetCtrl.calculatePercentages();
+
+        //read Percentages from the budget controller 
+        var percentages = budgetCtrl.getPercentages();
+
+        //update UI 
+        console.log(percentages);
+    };
+
 
 
     var ctrlAddItem = function () {
@@ -240,6 +279,9 @@ var controller = (function (budgetCtrl, UICtrl) {
 
             // 5. Calculate and update budget 
             updateBudget();
+
+            //6. Cal update Percentages
+            updatePercentages();
         }
     }
     console.log('it works');
@@ -262,6 +304,9 @@ var controller = (function (budgetCtrl, UICtrl) {
 
             //3. update and show the new budget 
             updateBudget();
+
+            //4.  Cal update Percentages
+            updatePercentages();
         }
     };
     return {
