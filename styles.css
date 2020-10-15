@@ -230,3 +230,11 @@ body {
 .item:hover .itemPercentage {
   transform: translateX(-20px);
 }
+
+/* more styling for improving the UX */
+.red {
+  color: #ff5049 !important;
+}
+.redFocus:focus {
+  border: 1px solid #ff5049 !important;
+}
