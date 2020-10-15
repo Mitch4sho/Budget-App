@@ -149,6 +149,32 @@ var UIController = (function () {
         container: '.container',
         expensePercLabel: '.itemPercentage'
     };
+    var formatNumber = function (num, type) {
+        var numSplit, int, dec;
+        /*
+        + or - before number 
+        exactly 2 decimal points 
+        comma separating the thousands 
+        
+        2310.8957 -> + 2,310.90
+         */
+
+        num = Math.abs(num);
+        num = num.toFixed(2);
+
+        numSplit = num.split('.');
+
+        int = numSplit[0];
+        if (int.length > 3) {
+            int = int.substr(0, int.length - 3) + ',' + int.substr(int.length - 3, 3);
+        };
+        dec = numSplit[1];
+
+        // ternary operator , shorthand way to write simple if else statement
+
+        return (type === 'exp' ? '- ' : '+ ') + int + '.' + dec;
+    };
+
     return {
         getInput: function () {
             return {
@@ -165,18 +191,20 @@ var UIController = (function () {
             // create html string with placeholder 
             if (type === 'inc') {
                 element = DOMstrings.incomeContainer;
-                html = '<div class="item" id="inc-%id%"><div class="itemDescription">%description%</div><div class="itemValue">+ %value%</div><div class="itemDelete"><button class="itemDeleteBtn"><i class="fas fa-trash-alt"></i></button></div></div>';
+                html = '<div class="item" id="inc-%id%"><div class="itemDescription">%description%</div><div class="itemValue">%value%</div><div class="itemDelete"><button class="itemDeleteBtn"><i class="fas fa-trash-alt"></i></button></div></div>';
             } else if (type === 'exp') {
                 element = DOMstrings.expenseContainer;
-                html = '<div class="item" id="exp-%id%"><div class="itemDescription">%description%</div><div class="itemValue">- %value%</div><div class="itemPercentage">21%</div><div class="itemDelete"><button class="itemDeleteBtn"><i class="fas fa-trash-alt"></i></button></div></div>';
+                html = '<div class="item" id="exp-%id%"><div class="itemDescription">%description%</div><div class="itemValue">%value%</div><div class="itemPercentage">21%</div><div class="itemDelete"><button class="itemDeleteBtn"><i class="fas fa-trash-alt"></i></button></div></div>';
             }
             //replace the placeholder text with acutal data
             newHtml = html.replace('%id%', obj.id);
             newHtml = newHtml.replace('%description%', obj.description);
-            newHtml = newHtml.replace('%value%', obj.value);
+            newHtml = newHtml.replace('%value%', formatNumber(obj.value, type));
 
             //insert the html into DOM
             document.querySelector(element).insertAdjacentHTML('beforeend', newHtml);
+
+
         },
 
         deleteListItem: function (selectorID) {
@@ -198,9 +226,12 @@ var UIController = (function () {
             fieldsArr[0].focus();
         },
         displayBudget: function (obj) {
-            document.querySelector(DOMstrings.budgetValue).textContent = obj.budget;
-            document.querySelector(DOMstrings.incomeValue).textContent = obj.totalInc;
-            document.querySelector(DOMstrings.expenseValue).textContent = obj.totalExp;
+
+            obj.budget > 0 ? type = 'inc' : type = 'exp';
+
+            document.querySelector(DOMstrings.budgetValue).textContent = formatNumber(obj.budget, type);
+            document.querySelector(DOMstrings.incomeValue).textContent = formatNumber(obj.totalInc, 'inc');
+            document.querySelector(DOMstrings.expenseValue).textContent = formatNumber(obj.totalExp, 'exp');
             if (obj.percentage > 0) {
                 document.querySelector(DOMstrings.expensePercentage).textContent = obj.percentage + '%';
             } else {
@@ -226,6 +257,7 @@ var UIController = (function () {
                 }
             });
         },
+
 
         //this DOMstrings is now public 
         getDOMstrings: function () {
@@ -303,7 +335,6 @@ var controller = (function (budgetCtrl, UICtrl) {
             updatePercentages();
         }
     }
-    console.log('it works');
 
     var ctrlDeleteItem = function (event) {
         var itemID, type, splitID, ID;
